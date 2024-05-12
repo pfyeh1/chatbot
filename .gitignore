@@ -1,7 +1,6 @@
 # config
 config.json
 
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -124,6 +123,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+myenv
 .env
 .venv
 env/

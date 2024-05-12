@@ -15,3 +15,5 @@ Relevant API keys are set within a config.json file.
 ## Further Reading
 
 https://www.koyeb.com/tutorials/use-llamaindex-streamlit-and-openai-to-query-unstructured-data
+
+https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/

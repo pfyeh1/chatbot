@@ -8,7 +8,7 @@ RAG Chatbot using Llama-index, OpenAI, and hugging face for embeddings
 Project to understand how to build a basic RAG application that takes input text from form, webpage, or uploaded files and deployable into production using Docker and AWS ECR and EC2 services.
 
 ## Getting Started
-
+Relevant API keys are set within a config.json file.
 
 ## Testing
 

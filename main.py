@@ -14,6 +14,10 @@ openai.api_key = config['openai_api_key']
 st.title("Chat with your uploaded file 🖐️ 💬 📚")
 
 def get_pdf_text(pdf_file):
+    """extracts text from .pdf file
+    :param pdf_file: *.pdf
+    :return: text
+    """
     text = ""
     pdf_reader = PdfReader(pdf_file)
     for page in pdf_reader.pages:
@@ -22,7 +26,7 @@ def get_pdf_text(pdf_file):
 
 def load_data(text):
     """
-    create VectoreStoreIndex from list of text
+    create VectoreStoreIndex from of text
     """
     with st.spinner(text = "Loading and indexing docs"):
         documents = [Document(text=text)]
@@ -57,27 +61,37 @@ def chat(index):
                 message = {"role": "assistant", "content": response.response}
                 st.session_state.messages.append(message) # Add response to message history 
 
-# upload pdf file
-pdf_file = st.file_uploader('Choose your .pdf file', type="pdf")
+upload_option = st.radio("Choose an option:", ["Upload PDF", "Input Text", "Provide URL"])
 
+if upload_option == "Upload PDF":
+    pdf_file = st.file_uploader('Choose your .pdf file', type="pdf")
+
+    if pdf_file is not None:
+        st.write("Uploaded Filename: ", pdf_file.name)
+        
+        text = get_pdf_text(pdf_file) # extract text from pdf
+        st.write("*PDF content extracted*...")
+        st.write(text[:100])
+            
+        try:
+            index = load_data(text = text)
+            chat(index)
+        except:
+            st.warning("Uh oh! Something went wrong!")
+    
+if upload_option == "Input Text":
+    text  = st.text_area("Input text here:")
+    if st.button("Submit"):
+        try:
+            index = load_data(text = text)
+            chat(index)
+        except:
+            st.warning("Uh oh! Something went wrong!")
 
 # initialize session
 if "messages" not in st.session_state.keys(): # Initialize the chat message history
     st.session_state.messages = [
-    {"role": "assistant", "content": "Ask me a question about your pdf!"}
+    {"role": "assistant", "content": "Ask me a question about your text!"}
     ]    
-            
-if pdf_file is not None:
-    st.write("Uploaded Filename: ", pdf_file.name)
-    
-    text = get_pdf_text(pdf_file) # extract text from pdf
-    st.write("*PDF content extracted*...")
-    st.write(text[:100])
-    
-    index = load_data(text=text)
-            
-    try:
-        index = load_data(text = text)
-        chat(index)
-    except:
-        st.warning("Uh oh! Something went wrong!")
+
+

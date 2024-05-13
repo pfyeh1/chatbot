@@ -76,17 +76,23 @@ if upload_option == "Upload PDF":
         try:
             index = load_data(text = text)
             chat(index)
-        except:
-            st.warning("Uh oh! Something went wrong!")
+        #except:
+        #    st.warning("Uh oh! Something went wrong!")
+        except Exception as e:
+            st.warning(f"An error occurred: {e}")
+    
     
 if upload_option == "Input Text":
     text  = st.text_area("Input text here:")
-    if st.button("Submit"):
+    submitted = st.button('Submit')
+    if submitted:
         try:
             index = load_data(text = text)
             chat(index)
-        except:
-            st.warning("Uh oh! Something went wrong!")
+    #except:
+    #    st.warning("Uh oh! Something went wrong!")
+        except Exception as e:
+            st.warning(f"An error occurred: {e}")
 
 # initialize session
 if "messages" not in st.session_state.keys(): # Initialize the chat message history

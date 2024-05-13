@@ -1,5 +1,5 @@
 import streamlit as st
-from llama_index.core import VectorStoreIndex, ServiceContext, Document
+from llama_index.core import VectorStoreIndex, Settings, Document
 from llama_index.llms.openai import OpenAI
 import openai
 from pypdf import PdfReader
@@ -30,13 +30,14 @@ def load_data(text):
     """
     with st.spinner(text = "Loading and indexing docs"):
         documents = [Document(text=text)]
-        service_context = ServiceContext.from_defaults(llm = OpenAI(
-                                                            model = "gpt-3.5-turbo",
-                                                            temperature = .5,
-                                                            system_prompt = 
-                                                           "Your job is to answer questions on the relate to the documents. Keep your answers technical, based on facts, and explain your reasoning."))
-        index = VectorStoreIndex.from_documents(documents, service_context = service_context)
+        Settings.llm = OpenAI(model = "gpt-3.5-turbo",
+                                        temperature = .5,
+                                        system_prompt = 
+                                                "Your job is to answer questions on the relate to the documents. Keep your answers technical, based on facts, and explain your reasoning.")
+        
+        index = VectorStoreIndex.from_documents(documents)
         return index
+
 
 def chat(index):
     """
